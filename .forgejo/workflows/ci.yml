@@ -1,0 +1,33 @@
+# CI de la forge forge.jrec.fr (Forgejo Actions). Pendant de .github/workflows/ci.yml :
+# memes commandes (uv pip install, pytest) sur le runner du serveur.
+# La presence de ce dossier fait ignorer .github/workflows/ par Forgejo.
+
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: [self-hosted, jre-server]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Install deps
+        run: |
+          ~/.local/bin/uv pip install --system -e ".[dev]"
+      - name: Run tests
+        run: pytest -v
