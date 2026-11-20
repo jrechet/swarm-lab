@@ -5,10 +5,10 @@ description = "Tiny FastAPI service used to exercise the swarm-bots fleet end-to
 requires-python = ">=3.12"
 dependencies = [
     # Intentionally pinned to mid-versions so Dependabot has something to bump.
-    "fastapi==0.163.2",
+    "fastapi==0.165.0",
     "uvicorn==0.54.0",
     "httpx==0.28.1",
-    "pydantic==2.14.3",
+    "pydantic==2.14.4",
 ]
 
 [project.optional-dependencies]
